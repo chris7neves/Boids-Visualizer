@@ -1,6 +1,11 @@
 import pyglet
-import user_shapes as bd
+import usertypes as bd
+import pyglet.window.key as key
+
+import math
 from time import sleep
+
+
 
 # Toggles to add
 # - fullscreen, use the window.set_fullscreen() method
@@ -12,13 +17,12 @@ screen_res = pyglet.text.Label('',
                           font_size=12,
                           x=0, anchor_x='left', anchor_y='top')
 
-
 flock = []
 
 @window.event
 def on_resize(width, height):
-    messg = f"{width}, {height}"
-    screen_res.text = messg
+    scrn_sz = f"{width}, {height}"
+    screen_res.text = scrn_sz
     screen_res.y = height
 
 
@@ -28,7 +32,6 @@ def on_mouse_press(x, y, button, modifiers):
         flock.append(bd.boid(x=x, y=y, radius=4, color=(50, 225, 255)))
 
 
-
 @window.event
 def on_draw():
     window.clear()
@@ -36,14 +39,16 @@ def on_draw():
     for boid in flock:
         boid.draw()
 
-
-    #pyglet.graphics.draw(1, pyglet.gl.GL_POINTS, ('v2i', (15, 15)), ('c3B', (255, 255, 255)))
-
+@window.event
+def on_key_press(symbol, modifiers):
+    if symbol == key.A:
+        print('A is pressed')
+        flock[0].applyforce(100, 45)
 
 
 def update(dt):
     for boid in flock:
-        boid.update(dt)
+        boid.update(dt, window.width, window.height)
 
 
 pyglet.clock.schedule_interval(update, 1/60.0) # passes the elapsed time directly to the update function.
