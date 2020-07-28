@@ -17,6 +17,7 @@ class boid(pyglet.shapes.Circle):
             self.x = 0
         elif self.x < 0:
             self.x = scrn_x
+
         self.vel_y += self.accel_y * dt
         self.y += self.vel_y * dt
         if self.y >= scrn_y:
