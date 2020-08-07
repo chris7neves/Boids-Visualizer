@@ -1,7 +1,7 @@
 import pyglet
 import usertypes as bd
 import pyglet.window.key as key
-
+import rules
 import math
 from time import sleep
 
@@ -47,6 +47,7 @@ def on_key_press(symbol, modifiers):
 
 
 def update(dt):
+    rules.move_com(flock)
     for boid in flock:
         boid.update(dt, window.width, window.height)
 
