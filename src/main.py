@@ -1,11 +1,9 @@
 import pyglet
-import usertypes as bd
+import boid as bd
 import pyglet.window.key as key
 import rules
 import math
 from time import sleep
-
-
 
 # Toggles to add
 # - fullscreen, use the window.set_fullscreen() method
@@ -17,7 +15,11 @@ screen_res = pyglet.text.Label('',
                           font_size=12,
                           x=0, anchor_x='left', anchor_y='top')
 
-flock = []
+num_boid = pyglet.text.Label('boids:',
+                          font_name='Times New Roman',
+                          font_size=12,
+                          x=0, anchor_x='left', anchor_y='top')
+
 
 @window.event
 def on_resize(width, height):
@@ -25,17 +27,21 @@ def on_resize(width, height):
     screen_res.text = scrn_sz
     screen_res.y = height
 
+    num_boid.y = height - 16
 
+flock = []
 @window.event
 def on_mouse_press(x, y, button, modifiers):
     if button == pyglet.window.mouse.LEFT:
         flock.append(bd.boid(x=x, y=y, radius=4, color=(50, 225, 255)))
+        num_boid.text = "boids: {}".format(len(flock))
 
 
 @window.event
 def on_draw():
     window.clear()
     screen_res.draw()
+    num_boid.draw()
     for boid in flock:
         boid.draw()
 
@@ -47,7 +53,8 @@ def on_key_press(symbol, modifiers):
 
 
 def update(dt):
-    rules.move_com(flock)
+    # rules.move_com(flock)
+
     for boid in flock:
         boid.update(dt, window.width, window.height)
 
